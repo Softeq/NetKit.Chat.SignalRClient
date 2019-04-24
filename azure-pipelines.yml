@@ -11,7 +11,13 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
      
 - script: dotnet pack
-    
+
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '-c $(BuildConfiguration)'
+
 - task: CopyFiles@2
   displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
   inputs:
@@ -20,3 +26,4 @@ steps:
 
 - task: PublishBuildArtifacts@1
   displayName: 'Publish Artifact: drop'
+  
