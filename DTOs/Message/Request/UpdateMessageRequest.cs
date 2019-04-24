@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message
+namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request
 {
     public class UpdateMessageRequest : BaseRequest
     {

@@ -3,7 +3,7 @@
 
 using System;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
 
 namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message
 {
@@ -11,7 +11,7 @@ namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message
     {
         public Guid Id { get; set; }
         public Guid ChannelId { get; set; }
-        public MemberSummary Sender { get; set; }
+        public MemberSummaryResponse Sender { get; set; }
         public string Body { get; set; }
         public DateTimeOffset Created { get; set; }
         public DateTimeOffset? Updated { get; set; }

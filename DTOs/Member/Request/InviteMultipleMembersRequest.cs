@@ -4,7 +4,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Member
+namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request
 {
     public class InviteMultipleMembersRequest : BaseRequest
     {

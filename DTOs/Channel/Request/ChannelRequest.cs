@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Channel
+namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request
 {
     public class ChannelRequest : BaseRequest
     {

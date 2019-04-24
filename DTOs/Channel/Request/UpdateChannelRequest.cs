@@ -8,7 +8,6 @@ namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Channel
 {
     public class UpdateChannelRequest : BaseRequest
     {
-        public string SaasUserId { get; set; }
         public Guid ChannelId { get; set; }
         public string Name { get; set; }
         public string Topic { get; set; }

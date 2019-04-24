@@ -10,9 +10,13 @@ using Microsoft.Extensions.Logging;
 using Softeq.NetKit.Chat.SignalRClient.Abstract;
 using Softeq.NetKit.Chat.SignalRClient.DTOs;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Client;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Client.Response;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Validation;
 using Softeq.NetKit.Chat.SignalRClient.Extensions;
 
@@ -39,10 +43,10 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public event Action<MessageResponse> MessageUpdated;
         public event Action<Guid> LastReadMessageUpdated;
 
-        public event Action<MemberSummary, ChannelSummaryResponse> MemberJoined;
-        public event Action<MemberSummary, Guid> MemberLeft;
-        public event Action<MemberSummary, Guid> MemberDeleted;
-        public event Action<MemberSummary, Guid> YouAreDeleted;
+        public event Action<MemberSummaryResponse, ChannelSummaryResponse> MemberJoined;
+        public event Action<MemberSummaryResponse, Guid> MemberLeft;
+        public event Action<MemberSummaryResponse, Guid> MemberDeleted;
+        public event Action<MemberSummaryResponse, Guid> YouAreDeleted;
 
         #endregion
         
@@ -57,15 +61,8 @@ namespace Softeq.NetKit.Chat.SignalRClient
             _connection = new HubConnectionBuilder()
                 .WithUrl($"{_chatHubUrl}/chat", options =>
                 {
-                    options.Headers.Add("Authorization", "Bearer " + accessToken);
+                    options.AccessTokenProvider = () => Task.FromResult(accessToken);
                 })
-#if DEBUG
-                .ConfigureLogging(logging =>
-                {
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                    logging.AddConsole();
-                })
-#endif
                 .Build();
 
             _connection.Closed += e =>
@@ -335,25 +332,25 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
             #region Member
 
-            _subscriptions.Add(_connection.On<MemberSummary, ChannelSummaryResponse>(ClientEvents.MemberJoined,
+            _subscriptions.Add(_connection.On<MemberSummaryResponse, ChannelSummaryResponse>(ClientEvents.MemberJoined,
                 (member, channel) =>
                 {
                     MemberJoined?.Invoke(member, channel);
                 }));
 
-            _subscriptions.Add(_connection.On<MemberSummary, Guid>(ClientEvents.MemberLeft,
+            _subscriptions.Add(_connection.On<MemberSummaryResponse, Guid>(ClientEvents.MemberLeft,
                 (member, channelId) =>
                 {
                     MemberLeft?.Invoke(member, channelId);
                 }));
             
-            _subscriptions.Add(_connection.On<MemberSummary, Guid>(ClientEvents.MemberDeleted,
+            _subscriptions.Add(_connection.On<MemberSummaryResponse, Guid>(ClientEvents.MemberDeleted,
                 (member, channelId) =>
                 {
                     MemberDeleted?.Invoke(member, channelId);
                 }));
             
-            _subscriptions.Add(_connection.On<MemberSummary, Guid>(ClientEvents.YouAreDeleted,
+            _subscriptions.Add(_connection.On<MemberSummaryResponse, Guid>(ClientEvents.YouAreDeleted,
                 (member, channelId) =>
                 {
                     YouAreDeleted?.Invoke(member, channelId);

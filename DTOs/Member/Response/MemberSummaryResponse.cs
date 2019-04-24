@@ -3,12 +3,11 @@
 
 using System;
 
-namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Member
+namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response
 {
-    public class MemberSummary
+    public class MemberSummaryResponse
     {
         public Guid Id { get; set; }
-        public string SaasUserId { get; set; }
         public string UserName { get; set; }
         public UserRole Role { get; set; }
         public UserStatus Status { get; set; }

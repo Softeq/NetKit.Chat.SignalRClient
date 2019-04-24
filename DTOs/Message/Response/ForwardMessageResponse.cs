@@ -2,8 +2,8 @@
 // http://www.softeq.com
 
 using System;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
 
 namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message
 {
@@ -14,7 +14,7 @@ namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message
         public Guid ChannelId { get; set; }
         public Guid? OwnerId { get; set; }
         public ChannelSummaryResponse Channel { get; set; }
-        public MemberSummary Owner { get; set; }
+        public MemberSummaryResponse Owner { get; set; }
         public DateTimeOffset Created { get; set; }
     }
 }

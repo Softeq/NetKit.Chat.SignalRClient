@@ -5,9 +5,12 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Client;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Client.Response;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request;
 
 namespace Softeq.NetKit.Chat.SignalRClient
 {

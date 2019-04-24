@@ -4,9 +4,10 @@
 using System;
 using Newtonsoft.Json;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Member;
+using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
 
-namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Channel
+namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response
 {
     public class ChannelSummaryResponse
     {
@@ -18,13 +19,10 @@ namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Channel
         public bool IsClosed { get; set; }
         public bool IsMuted { get; set; }
         public bool IsPinned { get; set; }
-        [JsonIgnore]
         public Guid CreatorId { get; set; }
-
-        public MemberSummary Creator { get; set; }
-        [JsonIgnore]
+        public MemberSummaryResponse Creator { get; set; }
         public Guid DirectMemberId { get; set; }
-        public MemberSummary DirectMember { get; set; }
+        public MemberSummaryResponse DirectMember { get; set; }
         public string CreatorSaasUserId { get; set; }
         public string Description { get; set; }
         public string WelcomeMessage { get; set; }

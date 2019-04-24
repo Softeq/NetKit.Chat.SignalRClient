@@ -3,7 +3,7 @@
 
 using System;
 
-namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Member
+namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request
 {
     public class InviteMemberRequest : BaseRequest
     {
