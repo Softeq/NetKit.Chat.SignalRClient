@@ -28,6 +28,7 @@ namespace Softeq.NetKit.Chat.SignalRClient
         private readonly string _chatHubUrl;
         private readonly List<IDisposable> _subscriptions = new List<IDisposable>();
         private IDisposable _accessTokenExpiredSubscription;
+        private readonly Func<Task<string>> _accessToken;
 
         #region Events
 
@@ -49,20 +50,28 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public event Action<MemberSummaryResponse, Guid> YouAreDeleted;
 
         #endregion
-        
-        public SignalRClient(string chatHubUrl)
+
+        public SignalRClient(string chatHubUrl, Func<Task<string>> accessToken)
         {
             _chatHubUrl = chatHubUrl;
+            _accessToken = accessToken;
         }
         
-        public async Task<ClientResponse> ConnectAsync(string accessToken)
+        public async Task<ClientResponse> ConnectAsync()
         {
             Console.WriteLine("Connecting to {0}", _chatHubUrl);
             _connection = new HubConnectionBuilder()
                 .WithUrl($"{_chatHubUrl}/chat", options =>
                 {
-                    options.AccessTokenProvider = () => Task.FromResult(accessToken);
+                    options.AccessTokenProvider = () => _accessToken.Invoke();
                 })
+#if DEBUG
+                .ConfigureLogging(logging =>
+                {
+                    logging.SetMinimumLevel(LogLevel.Trace);
+                    logging.AddConsole();
+                })
+#endif
                 .Build();
 
             _connection.Closed += e =>
