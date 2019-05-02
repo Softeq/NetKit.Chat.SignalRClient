@@ -6,9 +6,9 @@ using System.Collections.Generic;
 
 namespace Softeq.NetKit.Chat.SignalRClient.Extensions
 {
-    public static class EnumerableExtensions
+    internal static class EnumerableExtensions
     {
-        public static void Apply<T>(this IEnumerable<T> list, Action<T> action)
+        internal static void Apply<T>(this IEnumerable<T> list, Action<T> action)
         {
             foreach (var item in list)
             {
