@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
-using Microsoft.Extensions.Logging;
 using Softeq.NetKit.Chat.SignalRClient.Abstract;
 using Softeq.NetKit.Chat.SignalRClient.DTOs;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
@@ -56,22 +55,23 @@ namespace Softeq.NetKit.Chat.SignalRClient
             _chatHubUrl = chatHubUrl;
             _accessToken = accessToken;
         }
-        
-        public async Task<ClientResponse> ConnectAsync()
+
+        public virtual IHubConnectionBuilder SetupConnection()
         {
-            Console.WriteLine("Connecting to {0}", _chatHubUrl);
-            _connection = new HubConnectionBuilder()
+            var connection = new HubConnectionBuilder()
                 .WithUrl($"{_chatHubUrl}/chat", options =>
                 {
                     options.AccessTokenProvider = () => _accessToken.Invoke();
-                })
-#if DEBUG
-                .ConfigureLogging(logging =>
-                {
-                    logging.SetMinimumLevel(LogLevel.Trace);
-                    logging.AddConsole();
-                })
-#endif
+                });
+
+            return connection;
+        }
+
+        public async Task<ClientResponse> ConnectAsync()
+        {
+            Console.WriteLine("Connecting to {0}", _chatHubUrl);
+
+            _connection = SetupConnection()
                 .Build();
 
             _connection.Closed += e =>
