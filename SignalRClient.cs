@@ -281,6 +281,7 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
         public async Task DisconnectAsync()
         {
+            await _connection.InvokeAsync(ServerMethods.DeleteClientAsync).ConfigureAwait(false);
             await _connection.StopAsync().ConfigureAwait(false);
         }
 
