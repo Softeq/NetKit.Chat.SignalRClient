@@ -36,17 +36,17 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
         public event Action<ChannelSummaryResponse> ChannelUpdated;
         public event Action<ChannelSummaryResponse> ChannelAdded;
-        public event Action<ChannelSummaryResponse> ChannelClosed;
+        public event Action<Guid> ChannelClosed;
 
         public event Action<MessageResponse> MessageAdded;
-        public event Action<Guid, ChannelSummaryResponse> MessageDeleted;
+        public event Action<Guid> MessageDeleted;
         public event Action<MessageResponse> MessageUpdated;
         public event Action<Guid> LastReadMessageUpdated;
 
-        public event Action<MemberSummaryResponse, ChannelSummaryResponse> MemberJoined;
-        public event Action<MemberSummaryResponse, Guid> MemberLeft;
+        public event Action<ChannelSummaryResponse> MemberJoined;
+        public event Action<Guid> MemberLeft;
         public event Action<MemberSummaryResponse, Guid> MemberDeleted;
-        public event Action<MemberSummaryResponse, Guid> YouAreDeleted;
+        public event Action<Guid> YouAreDeleted;
 
         #endregion
 
@@ -303,10 +303,10 @@ namespace Softeq.NetKit.Chat.SignalRClient
                     ChannelUpdated?.Invoke(channel);
                 }));
 
-            _subscriptions.Add(_connection.On<ChannelSummaryResponse>(ClientEvents.ChannelClosed,
-                channel =>
+            _subscriptions.Add(_connection.On<Guid>(ClientEvents.ChannelClosed,
+                channelId =>
                 {
-                    ChannelClosed?.Invoke(channel);
+                    ChannelClosed?.Invoke(channelId);
                 }));
 
             #endregion
@@ -325,10 +325,10 @@ namespace Softeq.NetKit.Chat.SignalRClient
                     MessageUpdated?.Invoke(message);
                 }));
 
-            _subscriptions.Add(_connection.On<Guid, ChannelSummaryResponse>(ClientEvents.MessageDeleted,
-                (deletedMessageId, updatedChannelSummary) =>
+            _subscriptions.Add(_connection.On<Guid>(ClientEvents.MessageDeleted,
+                (deletedMessageId) =>
                 {
-                    MessageDeleted?.Invoke(deletedMessageId, updatedChannelSummary);
+                    MessageDeleted?.Invoke(deletedMessageId);
                 }));
 
             _subscriptions.Add(_connection.On<Guid>(ClientEvents.LastReadMessageChanged,
@@ -341,16 +341,16 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
             #region Member
 
-            _subscriptions.Add(_connection.On<MemberSummaryResponse, ChannelSummaryResponse>(ClientEvents.MemberJoined,
-                (member, channel) =>
+            _subscriptions.Add(_connection.On<ChannelSummaryResponse>(ClientEvents.MemberJoined,
+                (channel) =>
                 {
-                    MemberJoined?.Invoke(member, channel);
+                    MemberJoined?.Invoke(channel);
                 }));
 
-            _subscriptions.Add(_connection.On<MemberSummaryResponse, Guid>(ClientEvents.MemberLeft,
-                (member, channelId) =>
+            _subscriptions.Add(_connection.On<Guid>(ClientEvents.MemberLeft,
+                (channelId) =>
                 {
-                    MemberLeft?.Invoke(member, channelId);
+                    MemberLeft?.Invoke(channelId);
                 }));
             
             _subscriptions.Add(_connection.On<MemberSummaryResponse, Guid>(ClientEvents.MemberDeleted,
@@ -359,10 +359,10 @@ namespace Softeq.NetKit.Chat.SignalRClient
                     MemberDeleted?.Invoke(member, channelId);
                 }));
             
-            _subscriptions.Add(_connection.On<MemberSummaryResponse, Guid>(ClientEvents.YouAreDeleted,
-                (member, channelId) =>
+            _subscriptions.Add(_connection.On<Guid>(ClientEvents.YouAreDeleted,
+                (channelId) =>
                 {
-                    YouAreDeleted?.Invoke(member, channelId);
+                    YouAreDeleted?.Invoke(channelId);
                 }));
 
             #endregion
