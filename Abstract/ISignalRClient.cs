@@ -23,17 +23,17 @@ namespace Softeq.NetKit.Chat.SignalRClient.Abstract
 
         event Action<ChannelSummaryResponse> ChannelUpdated;
         event Action<ChannelSummaryResponse> ChannelAdded;
-        event Action<ChannelSummaryResponse> ChannelClosed;
+        event Action<Guid> ChannelClosed;
 
         event Action<MessageResponse> MessageAdded;
-        event Action<Guid, ChannelSummaryResponse> MessageDeleted;
+        event Action<Guid> MessageDeleted;
         event Action<MessageResponse> MessageUpdated;
         event Action<Guid> LastReadMessageUpdated;
 
-        event Action<MemberSummaryResponse, ChannelSummaryResponse> MemberJoined;
-        event Action<MemberSummaryResponse, Guid> MemberLeft;
+        event Action<ChannelSummaryResponse> MemberJoined;
+        event Action<Guid> MemberLeft;
         event Action<MemberSummaryResponse, Guid> MemberDeleted;
-        event Action<MemberSummaryResponse, Guid> YouAreDeleted;
+        event Action<Guid> YouAreDeleted;
 
         #endregion
 
