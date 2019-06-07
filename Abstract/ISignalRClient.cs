@@ -4,19 +4,13 @@
 using System;
 using System.Threading.Tasks;
 using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Channel;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Member;
 using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Message;
 using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Channel;
 using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Member;
 using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Message;
 using Softeq.NetKit.Chat.Client.SDK.Models.SignalRModels;
 using Softeq.NetKit.Chat.Client.SDK.Models.SignalRModels.Client;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
-using AddMessageRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request.AddMessageRequest;
-using CreateDirectChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.CreateDirectChannelRequest;
-using MuteChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.MuteChannelRequest;
-using PinChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.PinChannelRequest;
-using SetLastReadMessageRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request.SetLastReadMessageRequest;
-using UpdateChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.UpdateChannelRequest;
 
 namespace Softeq.NetKit.Chat.SignalRClient.Abstract
 {
