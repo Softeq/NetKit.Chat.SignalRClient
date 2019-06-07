@@ -3,14 +3,20 @@
 
 using System;
 using System.Threading.Tasks;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Client.Response;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Channel;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Message;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Channel;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Member;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Message;
+using Softeq.NetKit.Chat.Client.SDK.Models.SignalRModels;
+using Softeq.NetKit.Chat.Client.SDK.Models.SignalRModels.Client;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request;
+using AddMessageRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request.AddMessageRequest;
+using CreateDirectChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.CreateDirectChannelRequest;
+using MuteChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.MuteChannelRequest;
+using PinChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.PinChannelRequest;
+using SetLastReadMessageRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request.SetLastReadMessageRequest;
+using UpdateChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.UpdateChannelRequest;
 
 namespace Softeq.NetKit.Chat.SignalRClient.Abstract
 {
@@ -40,23 +46,23 @@ namespace Softeq.NetKit.Chat.SignalRClient.Abstract
         Task<ClientResponse> ConnectAsync();
         Task DisconnectAsync();
 
-        Task<ChannelSummaryResponse> CreateChannelAsync(CreateChannelRequest request);
-        Task<ChannelSummaryResponse> CreateDirectChannelAsync(CreateDirectChannelRequest request);
-        Task<ChannelSummaryResponse> UpdateChannelAsync(UpdateChannelRequest request);
-        Task PinChannelAsync(PinChannelRequest request);
-        Task MuteChannelAsync(MuteChannelRequest request);
-        Task CloseChannelAsync(ChannelRequest request);
-        Task JoinToChannelAsync(ChannelRequest request);
-        Task LeaveChannelAsync(ChannelRequest request);
+        Task<ChannelSummaryResponse> CreateChannelAsync(SignalRRequest<CreateChannelRequest> request);
+        Task<ChannelSummaryResponse> CreateDirectChannelAsync(SignalRRequest<CreateDirectChannelRequest> request);
+        Task<ChannelSummaryResponse> UpdateChannelAsync(SignalRRequest<UpdateChannelRequest> request);
+        Task PinChannelAsync(SignalRRequest<PinChannelRequest> request);
+        Task MuteChannelAsync(SignalRRequest<MuteChannelRequest> request);
+        Task CloseChannelAsync(SignalRRequest<ChannelRequest> request);
+        Task JoinToChannelAsync(SignalRRequest<ChannelRequest> request);
+        Task LeaveChannelAsync(SignalRRequest<ChannelRequest> request);
 
-        Task<MessageResponse> AddMessageAsync(AddMessageRequest request);
-        Task DeleteMessageAsync(DeleteMessageRequest request);
-        Task UpdateMessageAsync(UpdateMessageRequest request);
-        Task MarkAsReadMessageAsync(SetLastReadMessageRequest request);
+        Task<MessageResponse> AddMessageAsync(SignalRRequest<AddMessageRequest> request);
+        Task DeleteMessageAsync(SignalRRequest<DeleteMessageRequest> request);
+        Task UpdateMessageAsync(SignalRRequest<UpdateMessageRequest> request);
+        Task MarkAsReadMessageAsync(SignalRRequest<SetLastReadMessageRequest> request);
 
         Task<ClientResponse> GetClientAsync();
-        Task InviteMemberAsync(InviteMemberRequest request);
-        Task DeleteMemberAsync(DeleteMemberRequest request);
-        Task InviteMultipleMembersAsync(InviteMultipleMembersRequest request);
+        Task InviteMemberAsync(SignalRRequest<InviteMemberRequest> request);
+        Task DeleteMemberAsync(SignalRRequest<DeleteMemberRequest> request);
+        Task InviteMultipleMembersAsync(SignalRRequest<InviteMultipleMembersRequest> request);
     }
 }

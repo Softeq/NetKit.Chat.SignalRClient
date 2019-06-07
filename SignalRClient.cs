@@ -6,18 +6,25 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Channel;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Request.Message;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Channel;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Member;
+using Softeq.NetKit.Chat.Client.SDK.Models.CommonModels.Response.Message;
+using Softeq.NetKit.Chat.Client.SDK.Models.SignalRModels;
+using Softeq.NetKit.Chat.Client.SDK.Models.SignalRModels.Client;
 using Softeq.NetKit.Chat.SignalRClient.Abstract;
 using Softeq.NetKit.Chat.SignalRClient.DTOs;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Client.Response;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Validation;
 using Softeq.NetKit.Chat.SignalRClient.Extensions;
+using AddMessageRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request.AddMessageRequest;
+using CreateDirectChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.CreateDirectChannelRequest;
+using MuteChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.MuteChannelRequest;
+using PinChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request.PinChannelRequest;
+using SetLastReadMessageRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request.SetLastReadMessageRequest;
+using UpdateChannelRequest = Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.UpdateChannelRequest;
 
 namespace Softeq.NetKit.Chat.SignalRClient
 {
@@ -98,42 +105,42 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
         #region Channel
         
-        public Task<ChannelSummaryResponse> CreateChannelAsync(CreateChannelRequest request)
+        public Task<ChannelSummaryResponse> CreateChannelAsync(SignalRRequest<CreateChannelRequest> request)
         {
-            return SendAndHandleExceptionsAsync<ChannelSummaryResponse>(ServerMethods.CreateChannelAsync, request);
+            return SendAndHandleExceptionsAsync<CreateChannelRequest, ChannelSummaryResponse>(ServerMethods.CreateChannelAsync, request);
         }
 
-        public Task<ChannelSummaryResponse> CreateDirectChannelAsync(CreateDirectChannelRequest request)
+        public Task<ChannelSummaryResponse> CreateDirectChannelAsync(SignalRRequest<CreateDirectChannelRequest> request)
         {
-            return SendAndHandleExceptionsAsync<ChannelSummaryResponse>(ServerMethods.CreateDirectChannelAsync, request);
+            return SendAndHandleExceptionsAsync<CreateDirectChannelRequest, ChannelSummaryResponse>(ServerMethods.CreateDirectChannelAsync, request);
         }
 
-        public Task<ChannelSummaryResponse> UpdateChannelAsync(UpdateChannelRequest request)
+        public Task<ChannelSummaryResponse> UpdateChannelAsync(SignalRRequest<UpdateChannelRequest> request)
         {
-            return SendAndHandleExceptionsAsync<ChannelSummaryResponse>(ServerMethods.UpdateChannelAsync, request);
+            return SendAndHandleExceptionsAsync<UpdateChannelRequest, ChannelSummaryResponse>(ServerMethods.UpdateChannelAsync, request);
         }
 
-        public Task MuteChannelAsync(MuteChannelRequest request)
+        public Task MuteChannelAsync(SignalRRequest<MuteChannelRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.MuteChannelAsync, request);
         }
 
-        public Task PinChannelAsync(PinChannelRequest request)
+        public Task PinChannelAsync(SignalRRequest<PinChannelRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.PinChannelAsync, request);
         }
 
-        public Task CloseChannelAsync(ChannelRequest request)
+        public Task CloseChannelAsync(SignalRRequest<ChannelRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.CloseChannelAsync, request);
         }
 
-        public Task JoinToChannelAsync(ChannelRequest request)
+        public Task JoinToChannelAsync(SignalRRequest<ChannelRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.JoinToChannelAsync, request);
         }
 
-        public Task LeaveChannelAsync(ChannelRequest request)
+        public Task LeaveChannelAsync(SignalRRequest<ChannelRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.LeaveChannelAsync, request);
         }
@@ -142,23 +149,23 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
         #region Message
 
-        public Task<MessageResponse> AddMessageAsync(AddMessageRequest request)
+        public Task<MessageResponse> AddMessageAsync(SignalRRequest<AddMessageRequest> request)
         {
-            return SendAndHandleExceptionsAsync<MessageResponse>(ServerMethods.AddMessageAsync, request);
+            return SendAndHandleExceptionsAsync<AddMessageRequest, MessageResponse>(ServerMethods.AddMessageAsync, request);
         }
 
-        public Task DeleteMessageAsync(DeleteMessageRequest request)
+        public Task DeleteMessageAsync(SignalRRequest<DeleteMessageRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.DeleteMessageAsync, request);
         }
 
-        public Task UpdateMessageAsync(UpdateMessageRequest request)
+        public Task UpdateMessageAsync(SignalRRequest<UpdateMessageRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.UpdateMessageAsync, request);
 
         }
 
-        public Task MarkAsReadMessageAsync(SetLastReadMessageRequest request)
+        public Task MarkAsReadMessageAsync(SignalRRequest<SetLastReadMessageRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.MarkAsReadMessageAsync, request);
         }
@@ -172,24 +179,24 @@ namespace Softeq.NetKit.Chat.SignalRClient
             return await _connection.InvokeAsync<ClientResponse>(ServerMethods.GetClientAsync).ConfigureAwait(false);
         }
 
-        public Task InviteMemberAsync(InviteMemberRequest request)
+        public Task InviteMemberAsync(SignalRRequest<InviteMemberRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.InviteMemberAsync, request);
         }
 
-        public Task DeleteMemberAsync(DeleteMemberRequest request)
+        public Task DeleteMemberAsync(SignalRRequest<DeleteMemberRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.DeleteMemberAsync, request);
         }
 
-        public Task InviteMultipleMembersAsync(InviteMultipleMembersRequest request)
+        public Task InviteMultipleMembersAsync(SignalRRequest<InviteMultipleMembersRequest> request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.InviteMultipleMembersAsync, request);
         }
 
         #endregion
 
-        private async Task SendAndHandleExceptionsAsync(string methodName, BaseRequest request)
+        private async Task SendAndHandleExceptionsAsync<T>(string methodName, SignalRRequest<T> request)
         {
             var tcs = new TaskCompletionSource<bool>();
             var requestId = Guid.NewGuid().ToString();
@@ -212,9 +219,9 @@ namespace Softeq.NetKit.Chat.SignalRClient
             await tcs.Task.ConfigureAwait(false);
         }
 
-        private async Task<T> SendAndHandleExceptionsAsync<T>(string methodName, BaseRequest request)
+        private async Task<TR> SendAndHandleExceptionsAsync<T, TR>(string methodName, SignalRRequest<T> request)
         {
-            var tcs = new TaskCompletionSource<T>();
+            var tcs = new TaskCompletionSource<TR>();
             var requestId = Guid.NewGuid().ToString();
 
             CreateExceptionSubscription(requestId, tcs);
@@ -222,7 +229,7 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
             IDisposable successSubscription = null;
             var isCallEnded = false;
-            var result = default(T);
+            TR result = default(TR);
             successSubscription = _connection.On<string>(ClientEvents.RequestSuccess, id =>
             {
                 if (id == requestId)
@@ -240,7 +247,7 @@ namespace Softeq.NetKit.Chat.SignalRClient
             });
 
             request.RequestId = requestId;
-            result = await _connection.InvokeAsync<T>(methodName, request).ConfigureAwait(false);
+            result = await _connection.InvokeAsync<TR>(methodName, request).ConfigureAwait(false);
 
             if (isCallEnded)
             {

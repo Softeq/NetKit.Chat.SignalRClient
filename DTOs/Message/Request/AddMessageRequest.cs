@@ -2,6 +2,7 @@
 // http://www.softeq.com
 
 using System;
+using Softeq.NetKit.Chat.Client.SDK.Enums;
 
 namespace Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request
 {

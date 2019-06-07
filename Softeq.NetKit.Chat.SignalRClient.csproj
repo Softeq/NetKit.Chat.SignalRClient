@@ -19,4 +19,12 @@
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\NetKit.Chat.Client.SDK.REST\NetKit.Chat.Client.SDK.REST\NetKit.Chat.Client.SDK.REST\Softeq.NetKit.Chat.Client.SDK.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="DTOs\Client\" />
+  </ItemGroup>
+
 </Project>
