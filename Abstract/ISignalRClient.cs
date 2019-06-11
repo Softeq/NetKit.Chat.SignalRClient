@@ -3,14 +3,13 @@
 
 using System;
 using System.Threading.Tasks;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Client.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request.Channel;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request.Member;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request.Message;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Response.Channel;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Response.Member;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Response.Message;
+using Softeq.NetKit.Chat.TransportModels.Models.SignalRModels.Client;
 
 namespace Softeq.NetKit.Chat.SignalRClient.Abstract
 {

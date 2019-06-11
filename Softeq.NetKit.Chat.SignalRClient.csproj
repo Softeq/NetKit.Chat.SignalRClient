@@ -4,11 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
     <AssemblyName>Softeq.NetKit.Chat.SignalRClient</AssemblyName>
     <RootNamespace>Softeq.NetKit.Chat.SignalRClient</RootNamespace>
-    <Version>1.0.4-alpha</Version>
+    <Version>1.0.5-alpha</Version>
     <Description></Description>
     <Authors>Softeq Development Corp.</Authors>
     <Company>Softeq Development Corp.</Company>
-    <AssemblyVersion>1.0.4.0</AssemblyVersion>
+    <AssemblyVersion>1.0.5.0</AssemblyVersion>
     <PackageId>Softeq.NetKit.Chat.SignalRClient</PackageId>
     <Product>Softeq.NetKit.Chat.SignalRClient</Product>
     <PackageProjectUrl>https://github.com/Softeq/NetKit.Chat.Client.SDK</PackageProjectUrl>
@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
+    <PackageReference Include="Softeq.NetKit.Chat.TransportModels" Version="1.0.0-alpha" />
   </ItemGroup>
 
 </Project>
