@@ -16,12 +16,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="DTOs\Client\**" />
-    <EmbeddedResource Remove="DTOs\Client\**" />
-    <None Remove="DTOs\Client\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="1.0.4" />
     <PackageReference Include="Softeq.NetKit.Chat.TransportModels" Version="1.0.0-alpha" />
   </ItemGroup>
