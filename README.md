@@ -26,4 +26,4 @@ We welcome any contributions.
 
 ## License
 
-The NetKit.Chat.Client.SDK project is available for free use, as described by the [LICENSE](/LICENSE) (MIT).
+The Softeq.NetKit.Chat.SignalRClient project is available for free use, as described by the [LICENSE](/LICENSE) (MIT).

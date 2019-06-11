@@ -7,17 +7,17 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Softeq.NetKit.Chat.SignalRClient.Abstract;
-using Softeq.NetKit.Chat.SignalRClient.DTOs;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Channel.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Client.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Request;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Member.Response;
-using Softeq.NetKit.Chat.SignalRClient.DTOs.Message.Request;
 using Softeq.NetKit.Chat.SignalRClient.DTOs.Validation;
 using Softeq.NetKit.Chat.SignalRClient.Extensions;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request.Channel;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request.Member;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Request.Message;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Response.Channel;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Response.Member;
+using Softeq.NetKit.Chat.TransportModels.Models.CommonModels.Response.Message;
+using Softeq.NetKit.Chat.TransportModels.Models.SignalRModels;
+using Softeq.NetKit.Chat.TransportModels.Models.SignalRModels.Client;
 
 namespace Softeq.NetKit.Chat.SignalRClient
 {
@@ -207,14 +207,19 @@ namespace Softeq.NetKit.Chat.SignalRClient
                 }
             });
 
-            request.RequestId = requestId;
-            await _connection.InvokeAsync(methodName, request).ConfigureAwait(false);
+            var signalRRequest = new SignalRRequest<BaseRequest>()
+            {
+                Request = request,
+                RequestId = requestId
+            };
+
+            await _connection.InvokeAsync(methodName, signalRRequest).ConfigureAwait(false);
             await tcs.Task.ConfigureAwait(false);
         }
 
-        private async Task<T> SendAndHandleExceptionsAsync<T>(string methodName, BaseRequest request)
+        private async Task<TR> SendAndHandleExceptionsAsync<TR>(string methodName, BaseRequest request)
         {
-            var tcs = new TaskCompletionSource<T>();
+            var tcs = new TaskCompletionSource<TR>();
             var requestId = Guid.NewGuid().ToString();
 
             CreateExceptionSubscription(requestId, tcs);
@@ -222,7 +227,7 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
             IDisposable successSubscription = null;
             var isCallEnded = false;
-            var result = default(T);
+            TR result = default(TR);
             successSubscription = _connection.On<string>(ClientEvents.RequestSuccess, id =>
             {
                 if (id == requestId)
@@ -239,8 +244,13 @@ namespace Softeq.NetKit.Chat.SignalRClient
                 }
             });
 
-            request.RequestId = requestId;
-            result = await _connection.InvokeAsync<T>(methodName, request).ConfigureAwait(false);
+            var signalRRequest = new SignalRRequest<BaseRequest>
+            {
+                Request = request,
+                RequestId = requestId
+            };
+
+            result = await _connection.InvokeAsync<TR>(methodName, signalRRequest).ConfigureAwait(false);
 
             if (isCallEnded)
             {
