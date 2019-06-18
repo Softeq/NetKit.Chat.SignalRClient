@@ -18,7 +18,6 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public const string MemberLeft = "MemberLeft";
         public const string MemberJoined = "MemberJoined";
         public const string MemberDeleted = "MemberDeleted";
-        public const string YouAreDeleted = "YouAreDeleted";
 
         public const string ChannelAdded = "ChannelAdded";
         public const string ChannelClosed = "ChannelClosed";
