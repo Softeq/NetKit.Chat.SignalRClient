@@ -39,14 +39,13 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public event Action<Guid> ChannelClosed;
 
         public event Action<MessageResponse> MessageAdded;
-        public event Action<Guid> MessageDeleted;
+        public event Action<Guid, Guid> MessageDeleted;
         public event Action<MessageResponse> MessageUpdated;
         public event Action<Guid> LastReadMessageUpdated;
 
         public event Action<ChannelSummaryResponse> MemberJoined;
         public event Action<Guid> MemberLeft;
         public event Action<MemberSummaryResponse, Guid> MemberDeleted;
-        public event Action<Guid> YouAreDeleted;
 
         #endregion
 
@@ -155,7 +154,6 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public Task UpdateMessageAsync(UpdateMessageRequest request)
         {
             return SendAndHandleExceptionsAsync(ServerMethods.UpdateMessageAsync, request);
-
         }
 
         public Task MarkAsReadMessageAsync(SetLastReadMessageRequest request)
@@ -336,10 +334,10 @@ namespace Softeq.NetKit.Chat.SignalRClient
                     MessageUpdated?.Invoke(message);
                 }));
 
-            _subscriptions.Add(_connection.On<Guid>(ClientEvents.MessageDeleted,
-                (deletedMessageId) =>
+            _subscriptions.Add(_connection.On<Guid, Guid>(ClientEvents.MessageDeleted,
+                (deletedMessageId, channelId) =>
                 {
-                    MessageDeleted?.Invoke(deletedMessageId);
+                    MessageDeleted?.Invoke(deletedMessageId, channelId);
                 }));
 
             _subscriptions.Add(_connection.On<Guid>(ClientEvents.LastReadMessageChanged,
@@ -368,12 +366,6 @@ namespace Softeq.NetKit.Chat.SignalRClient
                 (member, channelId) =>
                 {
                     MemberDeleted?.Invoke(member, channelId);
-                }));
-            
-            _subscriptions.Add(_connection.On<Guid>(ClientEvents.YouAreDeleted,
-                (channelId) =>
-                {
-                    YouAreDeleted?.Invoke(channelId);
                 }));
 
             #endregion
