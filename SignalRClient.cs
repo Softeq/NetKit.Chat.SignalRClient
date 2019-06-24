@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR.Client;
 using Softeq.NetKit.Chat.SignalRClient.Abstract;
@@ -26,8 +28,8 @@ namespace Softeq.NetKit.Chat.SignalRClient
         private HubConnection _connection;
         private readonly string _chatHubUrl;
         private readonly List<IDisposable> _subscriptions = new List<IDisposable>();
-        private IDisposable _accessTokenExpiredSubscription;
         private readonly Func<Task<string>> _accessToken;
+        private readonly string _authorizationErrorStatusCode = ((int)HttpStatusCode.Unauthorized).ToString();
 
         #region Events
 
@@ -35,7 +37,6 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public event Action Disconnected;
 
         public event Action<ChannelSummaryResponse> ChannelUpdated;
-        public event Action<ChannelSummaryResponse> ChannelAdded;
         public event Action<Guid> ChannelClosed;
 
         public event Action<MessageResponse> MessageAdded;
@@ -65,7 +66,7 @@ namespace Softeq.NetKit.Chat.SignalRClient
 
             return connection;
         }
-
+        
         public async Task<ClientResponse> ConnectAsync()
         {
             Console.WriteLine("Connecting to {0}", _chatHubUrl);
@@ -80,19 +81,25 @@ namespace Softeq.NetKit.Chat.SignalRClient
                 return Task.CompletedTask;
             };
 
-            await _connection.StartAsync().ConfigureAwait(false);
-            Console.WriteLine("Connected to {0}", _chatHubUrl);
-            _accessTokenExpiredSubscription?.Dispose();
-            _accessTokenExpiredSubscription = _connection.On<string>(ClientEvents.AccessTokenExpired, requestId =>
+            try
             {
+                await _connection.StartAsync().ConfigureAwait(false);
+                Console.WriteLine("Connected to {0}", _chatHubUrl);
+
+                var client = await _connection.InvokeAsync<ClientResponse>(ServerMethods.AddClientAsync);
+
+                SubscribeToEvents();
+
+                return client;
+            }
+            catch (HttpRequestException e) when (e.Message.Contains(_authorizationErrorStatusCode))
+            {
+                // Workaround for HttpRequestException without StatusCode
+                // https://github.com/dotnet/corefx/issues/24253
+
                 AccessTokenExpired?.Invoke();
-            });
-
-            var client = await _connection.InvokeAsync<ClientResponse>(ServerMethods.AddClientAsync);
-
-            SubscribeToEvents();
-            
-            return client;
+                throw;
+            }
         }
 
         #region Channel
@@ -211,8 +218,18 @@ namespace Softeq.NetKit.Chat.SignalRClient
                 RequestId = requestId
             };
 
-            await _connection.InvokeAsync(methodName, signalRRequest).ConfigureAwait(false);
-            await tcs.Task.ConfigureAwait(false);
+            try
+            {
+                await _connection.InvokeAsync(methodName, signalRRequest).ConfigureAwait(false);
+                await tcs.Task.ConfigureAwait(false);
+            }
+            catch (HttpRequestException e) when (e.Message.Contains(_authorizationErrorStatusCode)) 
+            {
+                // Workaround for HttpRequestException without StatusCode
+                // https://github.com/dotnet/corefx/issues/24253
+
+                AccessTokenExpired?.Invoke();
+            }
         }
 
         private async Task<TR> SendAndHandleExceptionsAsync<TR>(string methodName, BaseRequest request)
@@ -299,12 +316,6 @@ namespace Softeq.NetKit.Chat.SignalRClient
             _subscriptions.Clear();
 
             #region Channel
-
-            _subscriptions.Add(_connection.On<ChannelSummaryResponse>(ClientEvents.ChannelAdded,
-                channel =>
-                {
-                    ChannelAdded?.Invoke(channel);
-                }));
 
             _subscriptions.Add(_connection.On<ChannelSummaryResponse>(ClientEvents.ChannelUpdated, 
                 channel =>
