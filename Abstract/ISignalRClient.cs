@@ -21,7 +21,6 @@ namespace Softeq.NetKit.Chat.SignalRClient.Abstract
         event Action Disconnected;
 
         event Action<ChannelSummaryResponse> ChannelUpdated;
-        event Action<ChannelSummaryResponse> ChannelAdded;
         event Action<Guid> ChannelClosed;
 
         event Action<MessageResponse> MessageAdded;
