@@ -19,11 +19,9 @@ namespace Softeq.NetKit.Chat.SignalRClient
         public const string MemberJoined = "MemberJoined";
         public const string MemberDeleted = "MemberDeleted";
 
-        public const string ChannelAdded = "ChannelAdded";
         public const string ChannelClosed = "ChannelClosed";
         public const string ChannelUpdated = "ChannelUpdated";
 
-        public const string AccessTokenExpired = "AccessTokenExpired";
         public const string ExceptionOccurred = "ExceptionOccurred";
         public const string RequestSuccess = "RequestSuccess";
 
